@@ -12,14 +12,19 @@ import os
 
 
 class PiUSV(object):
-    def __init__(self, address=0x18):
-        self.address = address
+    def __init__(self):
+        # Adresse
+        self.address = 0x18
         # StatusByte
         self.data_0 = 1
         # Version
+        self.data_1 = 12
+        # Parameter
         self.data_2 = 10
-        self.par = [None] * 10
-        self.par_2 = [None] * 10
+        # Variablen
+        self.par = [0,0,0,0,0,0,0,0,0,0]
+        self.par_2 = [0,0,0,0,0]
+        self.par_3 = [0,0,0,0,0]
         self.par_name = ["U_Batt (V)", "I_Rasp (A)", "U_Rasp (V)", "U_USB  (V)", "U_ext  (V)"]
         self.piusv = smbus.SMBus(1)
 
@@ -115,7 +120,6 @@ class PiUSV(object):
         self.get_parameter()
         self.word2int()
         return self.par_2[4]
-
 def main():
     optionen = "Moegliche Optionen:\n version \n status \n all \n log \n U_Batt \n I_Rasp \n U_Rasp \n U_USB \n U_ext"
     # Script mit diversen Optionen abarbeiten
@@ -126,7 +130,7 @@ def main():
         print optionen
         sys.exit(1)
 
-    piusv = PiUSV(address = 0x18)
+    piusv = PiUSV()
 
     # Firmwareversion
     if option == "version":
@@ -166,7 +170,6 @@ def main():
     # Falsche Option, Hilfeseite ausgeben
     else:
         print optionen
-
 
 if __name__ == '__main__':
     main()
